@@ -1,7 +1,7 @@
 // Interactivity logic for Campus Sicherheit
 
 // Webhook-URL für Make.com (hier Ihre tatsächliche Webhook-URL eintragen)
-const MAKE_WEBHOOK_URL = 'https://hook.eu2.make.com/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+const MAKE_WEBHOOK_URL = 'https://hook.eu1.make.com/5puh5s8vqjuhnvpn1sakfowd6b3uhokg';
 
 document.addEventListener('DOMContentLoaded', () => {
     // Mobile navigation toggle
