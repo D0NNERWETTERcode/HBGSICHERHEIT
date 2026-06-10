@@ -1,5 +1,8 @@
 // Interactivity logic for Campus Sicherheit
 
+// Webhook-URL für Make.com (hier Ihre tatsächliche Webhook-URL eintragen)
+const MAKE_WEBHOOK_URL = 'https://hook.eu2.make.com/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+
 document.addEventListener('DOMContentLoaded', () => {
     // Mobile navigation toggle
     const menuToggle = document.getElementById('menu-toggle');
@@ -93,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Form submission simulation
-    const forms = document.querySelectorAll('form');
+    const forms = document.querySelectorAll('form:not(#indeed-empfang-form)');
     forms.forEach(form => {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -166,6 +169,122 @@ document.addEventListener('DOMContentLoaded', () => {
         cookieDecline.addEventListener('click', () => {
             localStorage.setItem('cookie-consent', 'declined');
             cookieBanner.classList.remove('show');
+        });
+    }
+
+    // Helper to show success/error notification
+    function showNotification(message, isError = false) {
+        const successBanner = document.createElement('div');
+        successBanner.style.position = 'fixed';
+        successBanner.style.bottom = '20px';
+        successBanner.style.right = '20px';
+        successBanner.style.backgroundColor = isError ? '#e74c3c' : '#d6b779';
+        successBanner.style.color = '#0f1216';
+        successBanner.style.padding = '1rem 2rem';
+        successBanner.style.borderRadius = '8px';
+        successBanner.style.boxShadow = '0 4px 15px rgba(0,0,0,0.5)';
+        successBanner.style.zIndex = '3000';
+        successBanner.style.fontWeight = 'bold';
+        successBanner.style.fontFamily = 'sans-serif';
+        successBanner.style.transition = 'all 0.5s ease';
+        successBanner.textContent = message;
+        
+        document.body.appendChild(successBanner);
+
+        setTimeout(() => {
+            successBanner.style.opacity = '0';
+            setTimeout(() => {
+                if (document.body.contains(successBanner)) {
+                    document.body.removeChild(successBanner);
+                }
+            }, 500);
+        }, 4000);
+    }
+
+    // Indeed-Empfang Form Handler (Connect to Make.com Webhook)
+    const indeedForm = document.getElementById('indeed-empfang-form');
+    if (indeedForm) {
+        indeedForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const submitBtn = indeedForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn ? submitBtn.innerHTML : 'Bewerbung absenden';
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = 'Wird gesendet...';
+            }
+
+            const fileInput = document.getElementById('cv-file');
+            const file = fileInput && fileInput.files.length > 0 ? fileInput.files[0] : null;
+
+            const sendPayload = (base64Data = null, fileName = null) => {
+                const payload = {
+                    vorname: document.getElementById('vorname').value,
+                    nachname: document.getElementById('nachname').value,
+                    email: document.getElementById('email').value,
+                    telefon: document.getElementById('telefon').value,
+                    strasse: document.getElementById('strasse').value,
+                    hausnummer: document.getElementById('hausnummer').value,
+                    plz: document.getElementById('plz').value,
+                    ort: document.getElementById('ort').value,
+                    sachkunde: document.getElementById('sachkunde').value,
+                    arbeit: document.getElementById('arbeit').value,
+                    gemeldet: document.getElementById('gemeldet').value,
+                    lebenslauf_base64: base64Data,
+                    lebenslauf_name: fileName
+                };
+
+                fetch(MAKE_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        showNotification('Bewerbung erfolgreich gesendet!');
+                        indeedForm.reset();
+                        const fileLabelText = document.getElementById('file-upload-text');
+                        if (fileLabelText) {
+                            fileLabelText.textContent = 'Lebenslauf hochladen (PDF, Word)';
+                            fileLabelText.style.color = 'var(--text-gray)';
+                        }
+                    } else {
+                        showNotification('Fehler beim Senden. Bitte erneut versuchen.', true);
+                    }
+                })
+                .catch(error => {
+                    console.error('Webhook submission error:', error);
+                    showNotification('Verbindungsfehler zum Server. Bitte erneut versuchen.', true);
+                })
+                .finally(() => {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalText;
+                    }
+                });
+            };
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function() {
+                    // Get base64 string without data:application/pdf;base64, prefix
+                    const base64String = reader.result.split(',')[1];
+                    sendPayload(base64String, file.name);
+                };
+                reader.onerror = function() {
+                    console.error('File reading error');
+                    showNotification('Fehler beim Lesen des Lebenslaufs.', true);
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalText;
+                    }
+                };
+                reader.readAsDataURL(file);
+            } else {
+                sendPayload();
+            }
         });
     }
 });
