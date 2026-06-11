@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     submitBtn.innerHTML = originalText;
                 }
                 form.reset();
-                if (fileLabelText) fileLabelText.textContent = 'Lebenslauf hochladen (PDF, Word)';
+                if (fileLabelText) fileLabelText.textContent = 'Lebenslauf auswählen (nur PDF)';
             }, 1500);
         });
     });
@@ -247,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         indeedForm.reset();
                         const fileLabelText = document.getElementById('file-upload-text');
                         if (fileLabelText) {
-                            fileLabelText.textContent = 'Lebenslauf hochladen (PDF, Word)';
+                            fileLabelText.textContent = 'Lebenslauf hochladen (nur PDF)';
                             fileLabelText.style.color = 'var(--text-gray)';
                         }
                     } else {
