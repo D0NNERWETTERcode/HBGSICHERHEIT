@@ -231,7 +231,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     arbeit: document.getElementById('arbeit').value,
                     gemeldet: document.getElementById('gemeldet').value,
                     lebenslauf_base64: base64Data,
-                    lebenslauf_name: fileName
+                    lebenslauf_name: fileName,
+                    datenschutz_akzeptiert: document.getElementById('datenschutz-optin') ? document.getElementById('datenschutz-optin').checked : false,
+                    kontakt_akzeptiert: document.getElementById('kontakt-optin') ? document.getElementById('kontakt-optin').checked : false
                 };
 
                 fetch(MAKE_WEBHOOK_URL, {

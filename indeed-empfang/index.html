@@ -135,6 +135,21 @@
                         <input type="file" id="cv-file" accept=".pdf" required>
                     </div>
 
+                    <!-- Privacy and Contact Agreements -->
+                    <div class="form-group checkbox-group" style="display: flex; align-items: flex-start; gap: 0.75rem; margin-top: 1.5rem;">
+                        <input type="checkbox" id="datenschutz-optin" required style="width: auto; height: auto; margin-top: 0.25rem; accent-color: var(--primary);">
+                        <label for="datenschutz-optin" style="font-weight: normal; margin-bottom: 0; font-size: 0.9rem; line-height: 1.4; color: var(--text-gray); cursor: pointer; display: inline;">
+                            Hiermit bestätige ich, dass ich die <a href="/datenschutzerklaerung/" target="_blank" style="color: var(--primary); text-decoration: underline;">Datenschutzerklärung</a> gelesen und akzeptiert habe.
+                        </label>
+                    </div>
+
+                    <div class="form-group checkbox-group" style="display: flex; align-items: flex-start; gap: 0.75rem; margin-top: 1rem;">
+                        <input type="checkbox" id="kontakt-optin" required style="width: auto; height: auto; margin-top: 0.25rem; accent-color: var(--primary);">
+                        <label for="kontakt-optin" style="font-weight: normal; margin-bottom: 0; font-size: 0.9rem; line-height: 1.4; color: var(--text-gray); cursor: pointer; display: inline;">
+                            Ich bin damit einverstanden, dass ich im Rahmen des Bewerbungsprozesses telefonisch, per E-Mail oder WhatsApp kontaktiert werde und meine Daten an potenzielle Arbeitgeber weitergeleitet werden dürfen.
+                        </label>
+                    </div>
+
                     <div style="margin-top: 3rem; text-align: right;">
                         <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 1rem;">Bewerbung absenden</button>
                     </div>
