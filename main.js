@@ -252,6 +252,12 @@ document.addEventListener('DOMContentLoaded', () => {
                             fileLabelText.textContent = 'Lebenslauf hochladen (nur PDF)';
                             fileLabelText.style.color = 'var(--text-gray)';
                         }
+                        
+                        // Show success confirmation modal
+                        const successModal = document.getElementById('success-modal');
+                        if (successModal) {
+                            successModal.style.display = 'flex';
+                        }
                     } else {
                         showNotification('Fehler beim Senden. Bitte erneut versuchen.', true);
                     }
@@ -286,6 +292,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 reader.readAsDataURL(file);
             } else {
                 sendPayload();
+            }
+        });
+    }
+
+    // Success Modal Close Actions
+    const successModal = document.getElementById('success-modal');
+    const closeBtn = document.getElementById('success-modal-close-btn');
+    const closeAction = document.getElementById('success-modal-close-action');
+
+    const closeSuccessModal = () => {
+        if (successModal) {
+            successModal.style.display = 'none';
+        }
+    };
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeSuccessModal);
+    }
+    if (closeAction) {
+        closeAction.addEventListener('click', closeSuccessModal);
+    }
+    if (successModal) {
+        successModal.addEventListener('click', (e) => {
+            if (e.target === successModal) {
+                closeSuccessModal();
             }
         });
     }
