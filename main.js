@@ -234,7 +234,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     lebenslauf_name: fileName,
                     datenschutz_akzeptiert: document.getElementById('datenschutz-optin') ? document.getElementById('datenschutz-optin').checked : false,
                     kontakt_akzeptiert: document.getElementById('kontakt-optin') ? document.getElementById('kontakt-optin').checked : false,
-                    stelle: document.getElementById('job-title') ? document.getElementById('job-title').value : 'Empfangskraft'
+                    stelle: document.getElementById('job-title') ? document.getElementById('job-title').value : 'Empfangskraft',
+                    arbeitsort: document.getElementById('arbeitsort') ? document.getElementById('arbeitsort').value : 'Hamburg'
                 };
 
                 fetch(MAKE_WEBHOOK_URL, {
