@@ -233,7 +233,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     lebenslauf_base64: base64Data,
                     lebenslauf_name: fileName,
                     datenschutz_akzeptiert: document.getElementById('datenschutz-optin') ? document.getElementById('datenschutz-optin').checked : false,
-                    kontakt_akzeptiert: document.getElementById('kontakt-optin') ? document.getElementById('kontakt-optin').checked : false
+                    kontakt_akzeptiert: document.getElementById('kontakt-optin') ? document.getElementById('kontakt-optin').checked : false,
+                    stelle: document.getElementById('job-title') ? document.getElementById('job-title').value : 'Empfangskraft'
                 };
 
                 fetch(MAKE_WEBHOOK_URL, {
